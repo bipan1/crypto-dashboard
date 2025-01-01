@@ -13,11 +13,11 @@ import {
   Button,
   Pagination,
   Box,
-  TextField,
   InputLabel,
   Select,
   MenuItem,
-  FormControl
+  FormControl,
+  SelectChangeEvent
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -32,7 +32,7 @@ const CryptoTable: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
-  const [order, setOrder] = useState<string>('market_cap_desc');
+  const [order, setOrder] = useState<string >('market_cap_desc');
 
   useEffect(() => {
     const getCryptos = async () => {
@@ -57,7 +57,7 @@ const CryptoTable: React.FC = () => {
     setPage(newPage);
   };
 
-  const handleChangeOrder = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChangeOrder = (event: SelectChangeEvent<string>) => {
     setOrder(event.target.value as string);
   };
 
