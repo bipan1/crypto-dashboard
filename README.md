@@ -1,50 +1,71 @@
-# React + TypeScript + Vite
+# Crypto Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the Crypto Dashboard project! This project is built using Vite with React 18. It provides a dashboard to view cryptocurrency prices, details, and trends using data from the CoinGecko API.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Environment Variables](#environment-variables)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- View cryptocurrency prices and market data.
+- Search for cryptocurrencies by name.
+- View detailed information for each cryptocurrency.
+- Responsive design for mobile and desktop users.
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+Ensure you have the following installed on your local machine:
+
+- [Node.js](https://nodejs.org/) (>= 14.0.0)
+- [npm](https://www.npmjs.com/) (>= 6.0.0)
+
+### Installation
+
+1. Clone the repo:
+
+   ```sh
+   git clone https://github.com/bipan1/crypto-dashboard.git
+   ```
+   
+2. Navigate to the project directory:
+
+   ```sh
+   cd crypto-dashboard
+   ```
+
+3. Install the dependencies:
+
+    ```sh
+    npm install
+    ```
+### Usage
+Set up the environment variables:
+
+Create a .env file in the root of the project and add the following line:
+
+```sh
+VITE_API_BASE_URL=https://api.coingecko.com/api/v3
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Run the development server:
+  
+  ```sh
+  npm run dev
+  ```
+Open your browser and navigate to http://localhost:5173 to see the app in action.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Environment Variables
+This project requires the following environment variables:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+VITE_API_BASE_URL: The base URL for the CoinGecko API.
+
+Ensure you create a .env file in the root of the project and add the required variables.
