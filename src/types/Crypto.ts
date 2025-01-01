@@ -38,3 +38,16 @@ export interface CryptoDetailType {
   atl_date: Date,
   last_updated: Date
 }
+
+export interface CryptoSearchCoin {
+  id : string;
+  name : string;
+  symbol : string;
+  thumb : string;
+  large : string;
+  api_symbol : string;
+}
+
+export interface CryptoSearchResponse {
+  coins : CryptoSearchCoin[]
+}

@@ -13,6 +13,11 @@ import {
   Button,
   Pagination,
   Box,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -20,21 +25,23 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useEffect, useState } from 'react';
 import { fetchCryptos } from '../services/CryptoService';
 import { Crypto } from '../types/Crypto';
+import Search from './Search';
 
 const CryptoTable: React.FC = () => {
   const [cryptos, setCryptos] = useState<Crypto[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null);
+  const [order, setOrder] = useState<string>('market_cap_desc');
 
   useEffect(() => {
     const getCryptos = async () => {
       try {
-        const data = await fetchCryptos(page);
+        const data = await fetchCryptos(page, order);
         setCryptos(data);
-      } catch (error : any) {
+      } catch (error: any) {
         if (error.response && (error.response.status === 429 || error.response.status === 500)) { 
-          setError(`Error: ${error.response.status} - ${error.response.data.status.error_message}`); 
+          setError(`Error: ${error.response.status} - ${`${error.response.data.status.error_message} Refresh in a minute and everything should be alright.`}`); 
         } else { 
           setError('An unexpected error occurred.'); 
         }
@@ -44,10 +51,14 @@ const CryptoTable: React.FC = () => {
       }
     };
     getCryptos();
-  }, [page]);
+  }, [page, order]);
 
   const handleChangePage = (_: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
+  };
+
+  const handleChangeOrder = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setOrder(event.target.value as string);
   };
 
   if (loading) {
@@ -58,7 +69,7 @@ const CryptoTable: React.FC = () => {
     );
   }
 
-  if(error){
+  if (error) {
     return (
       <Typography variant="h6" color="error"> {error} </Typography>
     );
@@ -69,6 +80,26 @@ const CryptoTable: React.FC = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Cryptocurrency Prices
       </Typography>
+      <Box display="flex" justifyContent="space-between" width="100%" mb={2}>
+        <Search />
+        <Box flex={1} ml={1}>
+          <FormControl variant="outlined" fullWidth margin="normal">
+            <InputLabel>Order By</InputLabel>
+            <Select
+              value={order}
+              onChange={handleChangeOrder}
+              label="Order By"
+            >
+              <MenuItem value="market_cap_asc">Market Cap Ascending</MenuItem>
+              <MenuItem value="market_cap_desc">Market Cap Descending</MenuItem>
+              <MenuItem value="volume_asc">Volume Ascending</MenuItem>
+              <MenuItem value="volume_desc">Volume Descending</MenuItem>
+              <MenuItem value="id_asc">ID Ascending</MenuItem>
+              <MenuItem value="id_desc">ID Descending</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Box>
       <TableContainer
         component={Paper}
         sx={{
@@ -97,28 +128,21 @@ const CryptoTable: React.FC = () => {
               <TableRow key={crypto.id}>
                 <TableCell>{crypto.market_cap_rank}</TableCell>
                 <TableCell>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                >
-                  <img
-                    style={{ height: '30px', width: '30px', marginRight: '10px' }}
-                    src={crypto.image}
-                    alt="coin"
-                  />
-                  {crypto.name}
-                </Box>
+                  <Box display="flex" alignItems="center">
+                    <img
+                      style={{ height: '30px', width: '30px', marginRight: '10px' }}
+                      src={crypto.image}
+                      alt="coin"
+                    />
+                    {crypto.name}
+                  </Box>
                 </TableCell>
                 <TableCell>{crypto.symbol.toUpperCase()}</TableCell>
                 <TableCell>${crypto.current_price.toLocaleString()}</TableCell>
                 <TableCell>${crypto.market_cap.toLocaleString()}</TableCell>
                 <TableCell>${crypto.ath.toLocaleString()}</TableCell>
                 <TableCell>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap={0.5}
-                  >
+                  <Box display="flex" alignItems="center" gap={0.5}>
                     {crypto.price_change_percentage_24h > 0 ? (
                       <ArrowDropUpIcon fontSize="large" color="success" />
                     ) : (
