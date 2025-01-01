@@ -36,6 +36,8 @@ const CryptoTable: React.FC = () => {
 
   useEffect(() => {
     const getCryptos = async () => {
+      setLoading(true); 
+      setError(null);
       try {
         const data = await fetchCryptos(page, order);
         setCryptos(data);

@@ -78,7 +78,16 @@ const Search: React.FC = () => {
             )}
             <List style={{ maxHeight: '200px', overflowY: 'auto' }}>
               {searchResults.map((coin) => (
-                <ListItem component="button" key={coin.id} onClick={() => handleCoinClick(coin.id)}>
+                <ListItem 
+                    component="button" 
+                    key={coin.id} onClick={() => handleCoinClick(coin.id)}
+                    sx={{ 
+                        bgcolor: 'background.paper', 
+                        '&:hover': { bgcolor: 'background.default', }, 
+                        '&:focus': { bgcolor: 'background.default', },
+                        color : 'black'
+                    }}
+                >
                   <ListItemAvatar>
                     <Avatar src={coin.thumb} alt={coin.name} />
                   </ListItemAvatar>
