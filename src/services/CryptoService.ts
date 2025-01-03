@@ -26,6 +26,7 @@ export const fetchCryptoById = async (id: string): Promise<CryptoDetailType> => 
       params: {
         vs_currency: 'aud',
         ids: id,
+        x_cg_api_key : import.meta.env.VITE_API_KEY
       },
     });
     return response.data[0];
