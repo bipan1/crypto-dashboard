@@ -9,10 +9,10 @@ export const fetchCryptos = async (page : number, order : string): Promise<Crypt
         per_page: 10,
         page: page,
         sparkline: false,
-        order
+        order,
+        x_cg_api_key : import.meta.env.VITE_API_KEY
       },
     });
-    console.log('here 1')
     return response.data;
   } catch (error) {
     console.error('Error fetching cryptocurrencies', error);
@@ -28,7 +28,6 @@ export const fetchCryptoById = async (id: string): Promise<CryptoDetailType> => 
         ids: id,
       },
     });
-    console.log('here 2')
     return response.data[0];
   } catch (error) {
     console.error('Error fetching cryptocurrency', error);
@@ -43,7 +42,6 @@ export const searchCryptoByName = async (query : string) : Promise<CryptoSearchC
         query
       },
     });
-    console.log('here 3')
     return response.data.coins;
   } catch (error) {
     console.error('Error fetching cryptocurrency', error);
