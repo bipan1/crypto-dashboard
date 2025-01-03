@@ -16,7 +16,9 @@ Welcome to the Crypto Dashboard project! This project is built using Vite with R
 - Search for cryptocurrencies by name.
 - View detailed information for each cryptocurrency.
 - Responsive design for mobile and desktop users.
+- Searching and sorting the cryptos as required.
 
+ 
 ## Getting Started
 
 To get a local copy up and running, follow these simple steps.
@@ -53,8 +55,11 @@ Set up the environment variables:
 Create a .env file in the root of the project and add the following line:
 
 ```sh
-VITE_API_BASE_URL=https://api.coingecko.com/api/v3
+VITE_API_BASE_URL="https://api.coingecko.com/api/v3"
+VITE_API_KEY="YOUR_API_KEY"
 ```
+Here if you don't want to use the API_KEY then you can remove the ```sh x_cg_api_key : import.meta.env.VITE_API_KEY``` from the params of the api request in CryptoService.ts file. 
+
 
 Run the development server:
   
