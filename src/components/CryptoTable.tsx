@@ -24,8 +24,12 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useEffect, useState } from 'react';
 import { fetchCryptos } from '../services/CryptoService';
-import { Crypto } from '../types/Crypto';
+import { Crypto, PinnedItemType } from '../types/Crypto';
 import Search from './Search';
+import { MdPushPin } from "react-icons/md";
+import { CheckIfCoinExits } from '../lib/Helpers';
+import PinnedList from './PinnedList';
+
 
 const CryptoTable: React.FC = () => {
   const [cryptos, setCryptos] = useState<Crypto[]>([]);
@@ -33,6 +37,7 @@ const CryptoTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [order, setOrder] = useState<string >('market_cap_desc');
+  const [pinnedList, setPinnedList] = useState<PinnedItemType[]>([]);
 
   useEffect(() => {
     const getCryptos = async () => {
@@ -63,6 +68,22 @@ const CryptoTable: React.FC = () => {
     setOrder(event.target.value as string);
   };
 
+  const handlePinClick = (id : string, name : string, image : string) => {
+    setPinnedList((prevPinnedList) => {
+      if (CheckIfCoinExits(id, prevPinnedList)) {
+      return prevPinnedList.filter((item) => item.id !== id);
+      } else {
+      return [...prevPinnedList, { id, name, image }];
+      }
+    });
+  }
+
+  const handleRemovePin = (id : string) => {
+    setPinnedList((prevPinnedList) => {
+      return prevPinnedList.filter((item) => item.id !== id);
+    })
+  }
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
@@ -79,6 +100,10 @@ const CryptoTable: React.FC = () => {
 
   return (
     <Container>
+      <Typography variant="h4" align="center" gutterBottom>
+        Pinned List
+      </Typography>
+      <PinnedList pinnedList={pinnedList} handleRemovePin={handleRemovePin}/>
       <Typography variant="h4" align="center" gutterBottom>
         Cryptocurrency Prices
       </Typography>
@@ -116,7 +141,7 @@ const CryptoTable: React.FC = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#1976d2' }}>
             <TableRow>
-              {['Rank', 'Name', 'Symbol', 'Price', 'Market Cap', 'ATH', '24h Change', 'Total Volume', 'Details'].map(
+              {['Rank', 'Pinned', 'Name', 'Symbol', 'Price', 'Market Cap', 'ATH', '24h Change', 'Total Volume', 'Details'].map(
                 (header) => (
                   <TableCell key={header} sx={{ color: '#fff', fontWeight: 'bold' }}>
                     {header}
@@ -129,6 +154,7 @@ const CryptoTable: React.FC = () => {
             {cryptos.map((crypto) => (
               <TableRow key={crypto.id}>
                 <TableCell>{crypto.market_cap_rank}</TableCell>
+                <TableCell><Typography onClick={() => handlePinClick(crypto.id, crypto.name, crypto.image)}><MdPushPin color={CheckIfCoinExits(crypto.id, pinnedList) ? '#ffd480' :'#00004d'} /></Typography></TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">
                     <img

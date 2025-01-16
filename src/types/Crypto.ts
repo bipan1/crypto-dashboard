@@ -51,3 +51,9 @@ export interface CryptoSearchCoin {
 export interface CryptoSearchResponse {
   coins : CryptoSearchCoin[]
 }
+
+export interface PinnedItemType {
+  id : string;
+  image : string;
+  name : string;
+}
